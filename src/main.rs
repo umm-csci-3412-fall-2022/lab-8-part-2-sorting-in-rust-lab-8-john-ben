@@ -40,7 +40,7 @@ fn main() {
 // don't do that here, but you could add some print statements if,
 // for example, you want to watch the bubbling happen.
 //
-// Note that the parameter v *has* to be mutable because we're 
+// Note that the parameter v *has* to be mutable because we're
 // modifying it in place.
 fn insertion_sort<T: PartialOrd + std::fmt::Debug>(v: &mut [T]) {
     // Goal: (All x, y | 0 ≤ x < y < length : v[x] ≤ v[y])
@@ -56,7 +56,7 @@ fn insertion_sort<T: PartialOrd + std::fmt::Debug>(v: &mut [T]) {
         // j is where we are in the bubbling process, so we
         // start with j=i.
         let mut j = i;
-        // If j > 0 we might still need to move left, so continue. 
+        // If j > 0 we might still need to move left, so continue.
         // But _only_ continue if v[j] _should_ move left, i.e.,
         // if it's less than the value to its left (so those two
         // are out of order.)
@@ -80,7 +80,7 @@ fn insertion_sort<T: PartialOrd + std::fmt::Debug>(v: &mut [T]) {
 // don't do that here, but you could add some print statements if,
 // for example, you want to watch the sorting happen.
 //
-// Note that the parameter v *has* to be mutable because we're 
+// Note that the parameter v *has* to be mutable because we're
 // modifying it in place.
 fn quicksort<T: PartialOrd + std::fmt::Debug>(v: &mut [T]) {
     // Quicksort is a recursive solution where we select a pivot
@@ -92,7 +92,7 @@ fn quicksort<T: PartialOrd + std::fmt::Debug>(v: &mut [T]) {
     //   (All i | smaller ≤ i < length : v[i] ≥ pivot)
     // Now you can recursively call quicksort on the front using
     // the slice v[0..smaller] to sort that part, and call it
-    // recursively on the slice v[smaller+1..length] to sort 
+    // recursively on the slice v[smaller+1..length] to sort
     // the back half. (You need the +1 to ensure that both slices
     // are smaller than the original array; without it you can
     // end up with infinite recursion.)
@@ -105,7 +105,7 @@ fn quicksort<T: PartialOrd + std::fmt::Debug>(v: &mut [T]) {
     }
 
     // Now choose a pivot and do the organizing.
-    
+
     // ...
 
     let smaller = 0; // Totally wrong – you should fix this.
@@ -130,13 +130,13 @@ fn quicksort<T: PartialOrd + std::fmt::Debug>(v: &mut [T]) {
 // to sort things like numbers, but sorting "large" things (e.g., student records)
 // would involve copying them, and that's likely to be expensive and perhaps undesirable.
 //
-// Note that here the parameter v does *not* have to be mutable because we're 
+// Note that here the parameter v does *not* have to be mutable because we're
 // creating and returning a new vector instead of modifying v in place.
 // We're returning a vector instead of an array here because arrays have to
 // know exactly how big they are. I suspect there's a way to make that work
 // but I (Nic) couldn't figure out an easy way to sort out the types on the
-// `merge()` function keeping everything as arrays. It was a lot easier to 
-// just have the return type be Vec, so that's what I did. 
+// `merge()` function keeping everything as arrays. It was a lot easier to
+// just have the return type be Vec, so that's what I did.
 fn merge_sort<T: PartialOrd + std::marker::Copy + std::fmt::Debug>(v: &[T]) -> Vec<T> {
     // Merge sort is a recursive solution where we split the
     // array in half (slices make this easy), sort each half,
@@ -182,9 +182,23 @@ fn merge<T: PartialOrd + std::marker::Copy + std::fmt::Debug>(xs: Vec<T>, ys: Ve
     // vector, and then push all the remaining elements from the
     // other vector onto the result.
 
-    // This is totally wrong and will not sort. You should replace it
-    // with something useful. :)
-    xs
+    let mut xpos = 0;
+    let mut ypos = 0;
+    let mut output = Vec::<T>::new();
+
+    while xpos < xs.len() && ypos < ys.len() {
+        if xs[xpos] < ys[ypos] {
+            output.push(xs[xpos]);
+            xpos += 1;
+        } else {
+            output.push(ys[ypos]);
+            ypos += 1;
+        }
+    }
+
+    output.extend_from_slice(&xs[xpos..xs.len()]);
+    output.extend_from_slice(&ys[ypos..ys.len()]);
+    output
 }
 
 fn is_sorted<T: PartialOrd>(slice: &[T]) -> bool {
@@ -204,7 +218,7 @@ fn generate_random_array(len: i32, min: i32, max:i32) -> Vec<i32> {
         v.push(rng.gen_range(min, max));
     }
     // Rust returns the last expression in a function, so
-    // this is equivalent to `return v`. 
+    // this is equivalent to `return v`.
     v
 }
 
