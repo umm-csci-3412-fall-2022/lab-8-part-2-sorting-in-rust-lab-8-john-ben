@@ -186,6 +186,8 @@ fn merge<T: PartialOrd + std::marker::Copy + std::fmt::Debug>(xs: Vec<T>, ys: Ve
     let mut ypos = 0;
     let mut output = Vec::<T>::new();
 
+    //Loops through both halves until either has
+    //been fully traversed
     while xpos < xs.len() && ypos < ys.len() {
         if xs[xpos] < ys[ypos] {
             output.push(xs[xpos]);
@@ -196,6 +198,10 @@ fn merge<T: PartialOrd + std::marker::Copy + std::fmt::Debug>(xs: Vec<T>, ys: Ve
         }
     }
 
+    //After finishing one slice, append the remainder
+    //to the output (since the slices are sorted).
+    //One of these two will be empty due to being fully
+    //traversed, but we don't know which.
     output.extend_from_slice(&xs[xpos..xs.len()]);
     output.extend_from_slice(&ys[ypos..ys.len()]);
     output
