@@ -104,9 +104,6 @@ fn quicksort<T: PartialOrd + std::fmt::Debug>(v: &mut [T]) {
         return;
     }
 
-    // Now choose a pivot and do the organizing.
-
-    let mut pivot = v[0];
     let mut smaller = 1;
 
     //This is actually the number of elements
@@ -120,7 +117,8 @@ fn quicksort<T: PartialOrd + std::fmt::Debug>(v: &mut [T]) {
     //is definitely larger than the pivot.
 
     while larger > smaller {
-        if v[smaller] <= pivot {
+        //We're using v[0] as a pivot.
+        if v[smaller] <= v[0] {
             smaller += 1;
         } else {
             v.swap(smaller, larger);
@@ -130,8 +128,8 @@ fn quicksort<T: PartialOrd + std::fmt::Debug>(v: &mut [T]) {
     }
 
     //When smaller and larger are equal, only one element remains unexamined,
-    //and this is a special case where it must be specifically compared to the pivot.
-    if v[smaller] > pivot {
+    //and this is a special case where it must be specifically compared to the pivot (v[0]).
+    if v[smaller] > v[0] {
         smaller -= 1;
     }
     v.swap(0, smaller);
